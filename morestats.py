@@ -22,23 +22,44 @@ import time
 import numpy as np
 from matplotlib import pyplot as plt
 
-def process(file_path, hist='hist'):
+def process(file_path, hist='hist', morestats='morestats'):
     """Gives back the relative frequency of letters in a book"""
     print(f'Opening input file {file_path}...')
     with open(file_path, 'r') as input_file:
         text = input_file.read()
     letters = []
     total = 0.
-    for i in range(97, 123):
-        lower_letter = text.count(chr(i))
-        upper_letter = text.count(chr(i-32))
-        increase = lower_letter+upper_letter
-        letters.append(increase)
-        total += increase
-        #print(f'Number of {chr(i-32)}\'s counted = ', n+m)
-    for i in range(97, 123):
-        letters[i-97] /= total
-        print(f'Relative frequency of {chr(i-32)}\'s = ', letters[i-97])
+    if morestats:
+        characters = 0
+        for i in range(32, 126):
+            characters += text.count(chr(i))
+        print(f'[extra] Total number of characters = {characters}')
+        lines = text.count(chr(10))
+        print(f'[extra] Total number of lines = {lines}')
+        word_list = text.split()
+        words = len(word_list)
+        print(f'[extra] Total number of words = {words}')
+        for i in range(97, 123):
+            lower_letter = text.count(chr(i))
+            upper_letter = text.count(chr(i-32))
+            increase = lower_letter+upper_letter
+            letters.append(increase)
+            total += increase
+            #print(f'Number of {chr(i-32)}\'s counted = ', n+m)
+        for i in range(97, 123):
+            letters[i-97] /= total
+            print(f'Relative frequency of {chr(i-32)}\'s = ', letters[i-97])
+    else:
+        for i in range(97, 123):
+            lower_letter = text.count(chr(i))
+            upper_letter = text.count(chr(i-32))
+            increase = lower_letter+upper_letter
+            letters.append(increase)
+            total += increase
+            #print(f'Number of {chr(i-32)}\'s counted = ', n+m)
+        for i in range(97, 123):
+            letters[i-97] /= total
+            print(f'Relative frequency of {chr(i-32)}\'s = ', letters[i-97])
     alphabet = list(map(chr, range(97, 123)))
     arr = np.array(letters)
     if hist:
@@ -52,10 +73,11 @@ if __name__ == '__main__':
     PARSER = argparse.ArgumentParser(description='Show the relative\
          frequency of every english letter in a book')
     PARSER.add_argument('infile', type=str, help='path to the input file')
-    PARSER.add_argument('-hist', type=str, help='show a histogram of every\
-         letter relative frequency')
+    PARSER.add_argument('-hist', type=str, help='show a histogram of every letter\
+         relative frequency')
+    PARSER.add_argument('-more', type=str, help='show more stats sbout the book')
     ARGS = PARSER.parse_args()
-    process(ARGS.infile, ARGS.hist)
+    process(ARGS.infile, ARGS.hist, ARGS.more)
 
 END = time.time() - START
 print(f'Time elapsed from start = {END} seconds')
