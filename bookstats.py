@@ -22,7 +22,7 @@ import time
 import numpy as np
 from matplotlib import pyplot as plt
 
-def process(file_path):
+def process(file_path, hist='hist'):
     """Gives back the relative frequency of letters in a book"""
     print(f'Opening input file {file_path}...')
     with open(file_path, 'r') as input_file:
@@ -41,17 +41,19 @@ def process(file_path):
         print(f'Relative frequency of {chr(i-32)}\'s = ', letters[i-97])
     alphabet = list(map(chr, range(97, 123)))
     arr = np.array(letters)
-    plt.bar(alphabet, arr)
-    plt.title('Letters relative frequencies of occurrance')
-    plt.show()
+    if hist:
+        plt.bar(alphabet, arr)
+        plt.title('Letters relative frequencies of occurrance')
+        plt.show()
 
 START = time.time()
 
 if __name__ == '__main__':
-    PARSER = argparse.ArgumentParser(description='Print some book statistics')
+    PARSER = argparse.ArgumentParser(description='Show the relative frequency of every english letter in a book')
     PARSER.add_argument('infile', type=str, help='path to the input file')
+    PARSER.add_argument('-hist', type=str, help='show a histogram of every letter relative frequency')
     ARGS = PARSER.parse_args()
-    process(ARGS.infile)
+    process(ARGS.infile, ARGS.hist)
 
 END = time.time() - START
 print(f'Time elapsed from start = {END} seconds')
