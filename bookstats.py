@@ -21,7 +21,7 @@ import argparse
 import time
 from matplotlib import pyplot as plt
 
-def process(file_path, hist='hist'):
+def process(file_path):
     """Gives back the relative frequency of letters in a book"""
     print(f'Opening input file {file_path}...')
     with open(file_path, 'r') as input_file:
@@ -34,6 +34,10 @@ def process(file_path, hist='hist'):
     for i in range(97, 123):
         alpha[chr(i)] /= total
         print(f'Relative frequency of {chr(i-32)}\'s = ', alpha[chr(i)])
+    return alpha
+
+def mkhist(alpha, hist='hist'):
+    """Makes a histogram of the relative frequency of the letters"""
     if hist:
         plt.bar(alpha.keys(), alpha.values())
         plt.title('Letters relative frequencies of occurrance')
@@ -48,7 +52,9 @@ if __name__ == '__main__':
     PARSER.add_argument('-hist', type=str, help='show a histogram of every\
          letter relative frequency')
     ARGS = PARSER.parse_args()
-    process(ARGS.infile, ARGS.hist)
+    DICTIONARY = process(ARGS.infile)
+    mkhist(DICTIONARY, ARGS.hist)
+
 
 END = time.time() - START
 print(f'Time elapsed from start = {END} seconds')
