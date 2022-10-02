@@ -18,6 +18,7 @@
 """
 
 import argparse
+import logging
 import time
 import numpy as np
 from matplotlib import pyplot as plt
@@ -26,23 +27,17 @@ def process(file_path, hist='hist'):
     """Gives back the relative frequency of letters in a book"""
     print(f'Opening input file {file_path}...')
     with open(file_path, 'r') as input_file:
-        text = input_file.read()
-    letters = []
+        text = input_file.read().lower()
     total = 0.
+    alpha = {}
     for i in range(97, 123):
-        lower_letter = text.count(chr(i))
-        upper_letter = text.count(chr(i-32))
-        increase = lower_letter+upper_letter
-        letters.append(increase)
-        total += increase
-        #print(f'Number of {chr(i-32)}\'s counted = ', n+m)
+        alpha[chr(i)] = text.count(chr(i))
+        total += alpha[chr(i)]
     for i in range(97, 123):
-        letters[i-97] /= total
-        print(f'Relative frequency of {chr(i-32)}\'s = ', letters[i-97])
-    alphabet = list(map(chr, range(97, 123)))
-    arr = np.array(letters)
+        alpha[chr(i)] /= total
+        print(f'Relative frequency of {chr(i-32)}\'s = ', alpha[chr(i)])
     if hist:
-        plt.bar(alphabet, arr)
+        plt.bar(alpha.keys(), alpha.values())
         plt.title('Letters relative frequencies of occurrance')
         plt.show()
 

@@ -28,7 +28,7 @@ def process(file_path, hist='hist', morestats='morestats'):
     with open(file_path, 'r') as input_file:
         text = input_file.read()
     letters = []
-    total = 0.
+    total = 0. 
     if morestats:
         characters = 0
         for i in range(32, 126):
