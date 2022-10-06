@@ -53,8 +53,6 @@ if __name__ == '__main__':
          letter relative frequency')
     ARGS = PARSER.parse_args()
     DICTIONARY = process(ARGS.infile)
+    END = time.time() - START
+    print(f'Time elapsed from start = {END} seconds')
     mkhist(DICTIONARY, ARGS.hist)
-
-
-END = time.time() - START
-print(f'Time elapsed from start = {END} seconds')
